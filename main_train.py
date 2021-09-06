@@ -12,4 +12,4 @@ print(f"ID of current CUDA device: {torch.cuda.current_device()}")
 print(f"Name of current CUDA device: {torch.cuda.get_device_name(cuda_id)}")
 
 model = DnCNN()
-train_dncnn(model, max_epochs=5, checkpoints_dir='/home/sprigent/Documents/codes/scnndeconv/checkpoints/')
+train_dncnn(model, max_epochs=50, checkpoints_dir='/home/sprigent/Documents/codes/scnndeconv/checkpoints/')
