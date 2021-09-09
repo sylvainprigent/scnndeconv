@@ -1,3 +1,4 @@
-from .error_map import ErrorMapLoss
+from .error_map import SMSELoss, SAContrarioLoss
 
-__all__ = ['ErrorMapLoss']
+__all__ = ['SMSELoss',
+           'SAContrarioLoss']
