@@ -18,16 +18,16 @@ def my_disk(center, radius):
     a tuple of the (xx, yy) points coordinates
 
     """
-    sr = radius * radius
-    cc = []
-    rr = []
-    for x in range(center[0] - radius, center[0] + radius + 1):
-        for y in range(center[1] - radius, center[1] + radius + 1):
-            if (x - center[0]) * (x - center[0]) + (y - center[1]) * (
-                    y - center[1]) <= sr:
-                rr.append(x)
-                cc.append(y)
-    return np.array(cc), np.array(rr)
+    s_r = radius * radius
+    c_c = []
+    r_r = []
+    for i in range(center[0] - radius, center[0] + radius + 1):
+        for j in range(center[1] - radius, center[1] + radius + 1):
+            if (i - center[0]) * (i - center[0]) + (j - center[1]) * (
+                    j - center[1]) <= s_r:
+                r_r.append(i)
+                c_c.append(j)
+    return np.array(c_c), np.array(r_r)
 
 
 def my_disk_ring(center, radius, alpha):
@@ -48,19 +48,19 @@ def my_disk_ring(center, radius, alpha):
 
     """
 
-    sr = radius * radius
-    sa = (radius + alpha) * (radius + alpha)
-    ro = radius + alpha + 1
-    cc = []
-    rr = []
-    for x in range(center[0] - ro, center[0] + ro + 1):
-        for y in range(center[1] - ro, center[1] + ro + 1):
-            value = (x - center[0]) * (x - center[0]) + (y - center[1]) * (
-                        y - center[1])
-            if sr < value <= sa:
-                rr.append(x)
-                cc.append(y)
-    return np.array(cc), np.array(rr)
+    s_r = radius * radius
+    s_a = (radius + alpha) * (radius + alpha)
+    r_o = radius + alpha + 1
+    c_c = []
+    r_r = []
+    for i in range(center[0] - r_o, center[0] + r_o + 1):
+        for j in range(center[1] - r_o, center[1] + r_o + 1):
+            value = (i - center[0]) * (i - center[0]) + (j - center[1]) * (
+                        j - center[1])
+            if s_r < value <= s_a:
+                r_r.append(i)
+                c_c.append(j)
+    return np.array(c_c), np.array(r_r)
 
 
 def disk_patch(radius):

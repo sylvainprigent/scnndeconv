@@ -1,4 +1,9 @@
-from .error_map import SMSELoss, SAContrarioLoss
+"""Losses module
 
-__all__ = ['SMSELoss',
-           'SAContrarioLoss']
+Module that implement losses dedicated to image denoising and deconvolution
+
+"""
+
+from .error_map import SAContrarioLoss
+
+__all__ = ['SAContrarioLoss']
