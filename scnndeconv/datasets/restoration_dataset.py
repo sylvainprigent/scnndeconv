@@ -11,7 +11,7 @@ class RestorationDataset(Dataset):
     def __init__(self, source_dir, target_dir):
         self.source_dir = source_dir
         self.target_dir = target_dir
-        self.device = device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
         self.source_images = natsorted(os.listdir(source_dir))
         self.target_images = natsorted(os.listdir(target_dir))

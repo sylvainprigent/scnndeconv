@@ -18,7 +18,7 @@ print(f"Name of current CUDA device: {torch.cuda.get_device_name(cuda_id)}")
 #checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_1/checkpoints/epoch=49-step=56299.ckpt'
 
 #checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_2/checkpoints/epoch=49-step=56299.ckpt'
-checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_12/checkpoints/epoch=49-step=225099.ckpt'
+checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_15/checkpoints/epoch=1-step=10803.ckpt'
 #model = DnCNN(num_of_layers=11)
 pretrained_model = DnCNN.load_from_checkpoint(checkpoints_file)
 

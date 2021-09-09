@@ -26,12 +26,12 @@ class DnCNN(pl.LightningModule):
             layers.append(
                 nn.Conv2d(in_channels=features, out_channels=features, kernel_size=kernel_size, padding=padding,
                           bias=False))
-            layers.append(nn.BatchNorm2d(features))
+            layers.append(nn.BatchNorm2d(features, eps=0.0001, momentum=0.95))
             layers.append(nn.ReLU(inplace=True))
         layers.append(nn.Conv2d(in_channels=features, out_channels=channels, kernel_size=kernel_size, padding=padding,
                                 bias=False))
         self.dncnn = nn.Sequential(*layers)
-        print(sum(p.numel() for p in self.dncnn.parameters()))
+        print(sum(p.numel() for p in self.dncnn.parameters() if p.requires_grad))
 
     def forward(self, x):
         y = x
@@ -40,7 +40,8 @@ class DnCNN(pl.LightningModule):
 
     def train_dataloader(self):
         if self.data_loader is None:
-            return DataLoader(RestorationDataset(self.dataset_source_dir, self.dataset_target_dir), batch_size=128)
+            return DataLoader(RestorationDataset(self.dataset_source_dir, self.dataset_target_dir), batch_size=128,
+                              shuffle=True, drop_last=True)
         else:
             return self.data_loader
 
