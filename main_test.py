@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from scnndeconv.models import DnCNN, train_dncnn
+from scnndeconv.models import DnCNN, DnCNNMapLoss
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 import torch
@@ -18,18 +18,20 @@ print(f"Name of current CUDA device: {torch.cuda.get_device_name(cuda_id)}")
 #checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_1/checkpoints/epoch=49-step=56299.ckpt'
 
 #checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_2/checkpoints/epoch=49-step=56299.ckpt'
-checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_15/checkpoints/epoch=1-step=10803.ckpt'
-#model = DnCNN(num_of_layers=11)
-pretrained_model = DnCNN.load_from_checkpoint(checkpoints_file)
+#checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_23/checkpoints/epoch=49-step=198449.ckpt'
+#checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_27/checkpoints/epoch=0-step=3968.ckpt'
+#checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_28/checkpoints/epoch=0-step=3968.ckpt'
+#checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_29/checkpoints/epoch=49-step=198449.ckpt'
+#checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_23_dncnn_50/checkpoints/epoch=49-step=198449.ckpt'
+checkpoints_file = '/home/sprigent/Documents/codes/scnndeconv/lightning_logs/version_32/checkpoints/epoch=0-step=3968.ckpt' # A+0.01MSE loss
+
+pretrained_model = DnCNNMapLoss.load_from_checkpoint(checkpoints_file)
 
 
 gt_image_file = '/home/sprigent/Documents/datasets/airbus/original/test/GT/Brest0146_6836_50cm_F06opt.tif'
 test_img_file = '/home/sprigent/Documents/datasets/airbus/original/test/noise120/Brest0146_6836_50cm_F06opt.tif'
 gt_img = np.float32(io.imread(gt_image_file))
 test_img = np.float32(io.imread(test_img_file))
-
-#gt_img = gt_img/gt_img.max()
-#test_img = test_img/test_img.max()
 
 maxi = test_img.max()
 
