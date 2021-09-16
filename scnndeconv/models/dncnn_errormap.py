@@ -112,7 +112,7 @@ class DnCNNMapLoss(pl.LightningModule):
         """
         x, y = batch
         out = self.forward(x)
-        mse = SAContrarioLoss(radius=1, alpha=1, beta=0.01)
+        mse = SAContrarioLoss(radius=1, alpha=1, beta=0.01, gamma=2)
         loss = mse(y, out)
 
         tensorboard_logs = {'train_loss': loss}

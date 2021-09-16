@@ -31,10 +31,11 @@ class SAContrarioLoss(nn.Module):
 
     """
 
-    def __init__(self, radius=1, alpha=7, beta=1):
+    def __init__(self, radius=1, alpha=7, beta=1, gamma=2):
         super().__init__()
 
         self.beta = beta
+        self.gamma = gamma
         self.disk_mat = disk_patch(radius)
         self.ring_mat = ring_patch(radius, alpha)
         self.coefficient = math.sqrt(math.pi) * \
@@ -114,14 +115,36 @@ class SAContrarioLoss(nn.Module):
         # map combination
         th_map = th_map_pos2+th_map_neg2
 
-        #io.imsave('error_map_pos.tif', th_map_pos2[0, 0, :, :].cpu().detach().numpy())
-        #io.imsave('error_map_neg.tif', th_map_neg2[0, 0, :, :].cpu().detach().numpy())
+        #io.imsave('error_map.tif', th_map[0, 0, :, :].cpu().detach().numpy())
 
         # Map area to criterion
         area = torch.sum(th_map)/torch.numel(th_map)
+
+        # Map density criterion
+        dense_weights = torch.Tensor([[1, 1, 1], [1, 0, 1], [1, 1, 1]]).unsqueeze(0).unsqueeze(0).to(self.device)
+        dense_weights.require_grad = True
+        dense_conv = nn.Conv2d(1, 1, kernel_size=self.disk_mat.shape[0],
+                               stride=1,
+                               padding=1,
+                               bias=False)
+        with torch.no_grad():
+            dense_conv.weight = nn.Parameter(dense_weights)
+        dense_map = dense_conv(th_map)*th_map
+        threshold_dense = nn.Threshold(4, -1)
+
+        threshold_dense2 = nn.Threshold(0, 0)
+        th_dense = 1 - threshold_dense2(-threshold_dense(dense_map))
+
+        #io.imsave('error_map_density.tif',
+        #          th_dense[0, 0, :, :].cpu().detach().numpy())
+
+        density = torch.sum(th_dense) / torch.numel(th_map)
+
+        # MSE
         mse = torch.mean((inputs - targets) ** 2)
 
         #print('MSE=', mse)
         #print('area=', area)
-        output = area + self.beta*mse
+        #print('density=', density)
+        output = area + self.gamma*density + self.beta*mse
         return output
